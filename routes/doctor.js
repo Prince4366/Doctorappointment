@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 
 const HealthTip = require("../models/HealthtTip");
-const Question = require("../models/Question");
+const Question = require("../models/tempQuestion");
 const Appointment = require("../models/Appointment");
 
 function requireLogin(req, res, next) {

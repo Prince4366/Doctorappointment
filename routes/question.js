@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Question = require("../models/Question");
+const Question = require("../models/tempQuestion");
 
 // Patient asks a question
 router.post("/ask/:doctorId", async (req, res) => {
