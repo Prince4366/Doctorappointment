@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | PrimeCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="pc-shell">
+    
+
+    <main class="container" style="max-width:520px;">
+      <div class="pc-card" style="margin-top:18px;">
+        <div class="pc-card-body">
+          <h2 style="margin:0;">Welcome back</h2>
+          <div style="color:var(--pc-muted); font-weight:600; margin-top:6px;">Login to your PrimeCare account.</div>
+
+          <form method="POST" action="/auth/login" style="margin-top:14px;">
+            <div style="display:grid; gap:10px;">
+              <div>
+                <label style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;">Email</label>
+                <input class="pc-input" name="email" type="email" placeholder="Enter your email" required />
+              </div>
+
+              <div>
+                <label style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;">Password</label>
+                <input class="pc-input" name="password" type="password" placeholder="Enter your password" required />
+              </div>
+            </div>
+
+            <button type="submit" class="pc-btn pc-btn-primary" style="width:100%; margin-top:12px;">Login</button>
+          </form>
+
+          <div style="margin-top:14px; color:var(--pc-muted); font-weight:600;">
+            Don’t have an account? <a class="pc-link" href="/auth/signup">Create account</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

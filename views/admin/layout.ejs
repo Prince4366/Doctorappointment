@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<div class="flex">
+
+  <!-- Sidebar -->
+  <div class="w-64 bg-white h-screen shadow p-5">
+    <div class="mb-6 border-b pb-4">
+
+  <!-- Same logo as homepage -->
+  <a href="/doctors" class="pc-brand text-2xl font-extrabold">
+    PrimeCare
+  </a>
+
+  <!-- Bigger Admin Panel text -->
+  <p class="text-lg font-bold text-gray-600 mt-2">
+    Admin Panel
+  </p>
+
+</div>
+
+    <ul class="space-y-4">
+      <li>
+        <a href="/admin/dashboard" class="hover:text-gray-500">Dashboard</a>
+      </li>
+      <li>
+        <a href="/admin/add-doctor" class="hover:text-gray-500">Add Doctor</a>
+      </li>
+      <li>
+        <a href="/exploredoctors" class="hover:text-gray-500">View Doctors</a>
+      </li>
+      <li>
+        <a href="/auth/logout" class="text-red-500 hover:text-red-700 font-semibold">
+          Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-6">
+    <%- body %>
+  </div>
+
+</div>
+
+</body>
+</html>

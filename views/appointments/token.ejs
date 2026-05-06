@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Appointment Token</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    .print-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #2c7be5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .video-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: green;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    @media print {
+      .print-btn, .back-btn, .video-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <h1>🏥 Doctor Appointment Token</h1>
+</header>
+
+<div class="container">
+  <div class="doctor-card">
+
+    <h2>🎟 Token Number: <%= appointment.tokenNumber %></h2>
+
+    <!-- ✅ Better date format -->
+    <p><strong>Date:</strong> <%= new Date(appointment.date).toLocaleString() %></p>
+
+    <p>
+      <strong>⏰ Estimated Appointment Time:</strong>
+      <span style="color:#2c7be5; font-weight:bold;">
+        <%= appointment.estimatedTime %>
+      </span>
+    </p>  
+
+    <hr>
+
+    <h3>👨‍⚕️ Doctor Details</h3>
+    <p><strong>Name:</strong> <%= doctor.name %></p>
+    <p><strong>Specialization:</strong> <%= doctor.specialization %></p>
+
+    <hr>
+
+    <h3>🧑‍🦱 Patient Details</h3>
+    <h3>🧑‍🦱 Patient Details</h3>
+
+<p><strong>Name:</strong> <%= patient?.name || "N/A" %></p>
+<p><strong>Age:</strong> <%= patient?.age || "N/A" %></p>
+<p><strong>Mobile:</strong> <%= patient?.mobile || "N/A" %></p>
+<p><strong>Aadhar No:</strong> <%= patient?.aadhar || "N/A" %></p>
+<p><strong>Email:</strong> <%= patient?.email || "N/A" %></p>
+<p><strong>Address:</strong> <%= patient?.address || "N/A" %></p>
+
+    <hr>
+
+    <!-- ✅ Status INSIDE card -->
+    <p>
+      <strong>Status:</strong>
+      <span style="color:orange; font-weight:bold;">
+        <%= appointment.status %>
+      </span>
+    </p>
+
+    <!-- 🎥 VIDEO BUTTON -->
+    <% if(appointment.status !== "completed") { %>
+      <a href="/doctors/video/<%= appointment._id %>" class="video-btn">
+        🎥 Start Video Consultation
+      </a>
+    <% } else { %>
+      <p style="color:gray;">Video call is unavailable for completed appointments</p>
+    <% } %>
+
+    <hr>
+
+    <p style="color: green; font-weight: bold;">
+      Please bring this token while visiting the clinic.
+    </p>
+
+    <button class="print-btn" onclick="window.print()">🖨 Print Token</button>
+
+    <br><br>
+    <a class="back-btn" href="/doctors">⬅ Back to Doctors</a>
+
+  </div>
+</div>
+
+</body>
+</html>

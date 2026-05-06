@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor Profile</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
+</head>
+
+<body>
+
+<div class="pc-shell">
+
+  <main class="container">
+    <div class="pc-hero">
+      <img class="pc-hero-avatar" src="<%= doctor.image?.url || '/images/doctor.png' %>" alt="Doctor">
+      <div style="min-width: 220px;">
+        <h1 class="pc-hero-title">Dr. <%= doctor.name %></h1>
+        <div class="pc-hero-sub"><%= doctor.specialization %> • <%= [doctor.district, doctor.state].filter(Boolean).join(', ') %></div>
+        <div class="pc-pillrow">
+          <span class="pc-pill">⭐ <%= doctor.rating || "4.5" %></span>
+          <span class="pc-pill"><%= doctor.experience %> yrs experience</span>
+          <% if (doctor.videoConsultation) { %>
+            <span class="pc-pill" style="border-color: rgba(22,163,74,0.25); background: rgba(22,163,74,0.10); color: #0f7a2f;">Video consult</span>
+          <% } %>
+        </div>
+      </div>
+
+      <div style="margin-left:auto; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="pc-btn pc-btn-primary"
+            onclick="payNow('<%= doctor._id %>', <%= doctor.consultationFee %>)">
+            Book Appointment
+          </button>
+        <a class="pc-btn pc-btn-ghost" href="/doctors/video-consultation" style="text-decoration:none;">Video consultation</a>
+      </div>
+    </div>
+
+    <div class="pc-layout-2col" style="margin-top:16px;">
+      <!-- Left -->
+      <section style="min-width:0; display:flex; flex-direction:column; gap:12px;">
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">Doctor information</h3>
+            <div class="pc-info-grid">
+              <div class="pc-info">
+                <div class="pc-info-k">Experience</div>
+                <div class="pc-info-v"><%= doctor.experience %> years</div>
+              </div>
+              <div class="pc-info">
+                <div class="pc-info-k">Qualification</div>
+                <div class="pc-info-v"><%= doctor.degree || "-" %></div>
+              </div>
+              <div class="pc-info">
+                <div class="pc-info-k">Consultation fee</div>
+                <div class="pc-info-v">₹ <%= doctor.consultationFee || doctor.fees || "-" %></div>
+              </div>
+              <div class="pc-info">
+                <div class="pc-info-k">Clinic address</div>
+                <div class="pc-info-v"><%= doctor.clinicAddress || "-" %></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">OPD timings</h3>
+            <div style="color:var(--pc-muted); font-weight:600; font-size:13px;">
+              Monday – Saturday • Starts at 9:00 AM • Avg 10 minutes per patient
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">About</h3>
+            <div style="color:var(--pc-muted); font-weight:600; font-size:13px; line-height:1.5;">
+              <%= doctor.about || (`Dr. ${doctor.name} is a trusted ${doctor.specialization} with ${doctor.experience} years of experience. Known for patient-friendly consultation and accurate diagnosis.`) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">Patient reviews</h3>
+
+            <% if (!reviews || reviews.length === 0) { %>
+              <div style="color:var(--pc-muted); font-weight:600;">No reviews yet.</div>
+            <% } %>
+
+            <div style="display:grid; gap:10px; margin-top:10px;">
+              <% (reviews || []).forEach(r => { %>
+                <div class="pc-review">
+                  <div class="pc-review-top">
+                    <div><%= r.patientId?.name || "Patient" %></div>
+                    <div>⭐ <%= r.rating %>/5</div>
+                  </div>
+                  <div class="pc-review-text"><%= r.comment %></div>
+                  <div class="pc-review-meta"><%= r.createdAt.toDateString() %></div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right -->
+      <aside style="min-width:0; display:flex; flex-direction:column; gap:12px;">
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">Quick actions</h3>
+            <div class="pc-pillrow">
+              <span class="pc-pill">Token-based OPD</span>
+              <span class="pc-pill">Daily limit: <%= doctor.dailyLimit || "-" %></span>
+            </div>
+            <div class="pc-card-actions" style="margin-top:12px;">
+              <button class="pc-btn pc-btn-primary"
+                onclick="payNow('<%= doctor._id %>', <%= doctor.consultationFee %>)">
+                Book Appointment
+              </button>
+              <a class="pc-btn pc-btn-ghost" style="width:100%; text-decoration:none; text-align:center;" href="/appointments/my">View my appointments</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">Exact location</h3>
+            <div style="color:var(--pc-muted); font-weight:700; font-size:13px; line-height:1.45;">
+              <%= doctor.clinicAddress || "-" %><br>
+              <%= [doctor.district, doctor.state].filter(Boolean).join(", ") %>
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">Health tips</h3>
+            <% if (!healthTips || healthTips.length === 0) { %>
+              <div style="color:var(--pc-muted); font-weight:600;">No health tips posted yet.</div>
+            <% } else { %>
+              <div style="display:grid; gap:10px;">
+                <% healthTips.forEach(tip => { %>
+                  <div class="pc-info">
+                    <div class="pc-info-k"><%= tip.title %></div>
+                    <div class="pc-info-v" style="font-weight:700; color:var(--pc-muted);"><%= tip.summary %></div>
+                    <div style="margin-top:8px; color:var(--pc-muted); font-weight:700; font-size:12px;">
+                      <%= tip.createdAt.toDateString() %>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <h3 class="pc-section-title">Questions & Answers</h3>
+            <% if (!questions || questions.length === 0) { %>
+              <div style="color:var(--pc-muted); font-weight:600;">No questions asked yet.</div>
+            <% } else { %>
+              <div style="display:grid; gap:10px;">
+                <% questions.forEach(q => { %>
+                  <div class="pc-info">
+                    <div class="pc-info-k">Q</div>
+                    <div class="pc-info-v"><%= q.question %></div>
+                    <div style="margin-top:10px;">
+                      <% if (q.answer) { %>
+                        <div class="pc-info-k">A</div>
+                        <div class="pc-info-v" style="color:var(--pc-muted); font-weight:800;"><%= q.answer %></div>
+                      <% } else { %>
+                        <div style="color:var(--pc-muted); font-weight:700; font-size:13px;"><em>Awaiting doctor response</em></div>
+                      <% } %>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section style="margin-top:16px;">
+      <div class="pc-card">
+        <div class="pc-card-body">
+          <h3 class="pc-section-title">Clinic Location</h3>
+
+          <div class="pc-map-wrap">
+            <div id="pcClinicMap" class="pc-map-canvas" aria-label="Clinic location map"></div>
+            <div class="pc-map-meta">
+              <div>
+                <div class="pc-info-k">Clinic address</div>
+                <div id="pcClinicAddress" class="pc-info-v"><%= doctor.clinicAddress || [doctor.district, doctor.state].filter(Boolean).join(", ") || "Delhi, India" %></div>
+              </div>
+              <a
+                id="pcDirectionsBtn"
+                class="pc-btn pc-btn-primary"
+                href="https://www.google.com/maps?q=28.6139,77.2090"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="text-decoration:none;"
+              >
+                Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script>
+<script>
+  // Leaflet clinic map: fetches doctor coordinates from backend and falls back to Delhi if unavailable.
+  (async function initClinicMap() {
+    const mapEl = document.getElementById("pcClinicMap");
+    if (!mapEl || typeof L === "undefined") return;
+
+    const fallback = {
+      name: "Dr. <%= doctor.name %>",
+      clinic: "<%= (doctor.clinicAddress || 'PrimeCare Clinic').replace(/"/g, '&quot;') %>",
+      lat: 28.6139,
+      lng: 77.2090,
+      address: "<%= ([doctor.clinicAddress, [doctor.district, doctor.state].filter(Boolean).join(', ')].filter(Boolean).join(', ') || 'Delhi, India').replace(/"/g, '&quot;') %>"
+    };
+
+    let data = fallback;
+    try {
+      const res = await fetch("/doctors/api/<%= doctor._id %>/location");
+      if (res.ok) data = await res.json();
+    } catch (err) {
+      console.error("Map location fetch failed", err);
+    }
+
+    document.getElementById("pcClinicAddress").textContent = data.address || fallback.address;
+    document.getElementById("pcDirectionsBtn").href = `https://www.google.com/maps?q=${data.lat},${data.lng}`;
+
+    const map = L.map("pcClinicMap", {
+      zoomControl: true,
+      scrollWheelZoom: false
+    }).setView([data.lat, data.lng], 14);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    L.marker([data.lat, data.lng])
+      .addTo(map)
+      .bindPopup(`<strong>${data.name}</strong><br>${data.clinic}`)
+      .openPopup();
+
+    // Fix rendering when map becomes visible after layout paint.
+    setTimeout(() => map.invalidateSize(), 120);
+  })();
+</script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+window.payNow = async function(doctorId, fee) {
+  console.log("CLICKED", doctorId, fee);
+
+  const res = await fetch("/appointments/create-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ amount: fee })
+  });
+
+  const order = await res.json();
+
+  console.log("ORDER:", order);
+
+    const options = {
+  key: "rzp_test_SgUVXZAGtmQreL",
+  amount: order.amount,
+  currency: "INR",
+  order_id: order.id,
+  name: "PrimeCare",
+  description: "Doctor Appointment",
+
+  prefill: {
+  name: "Test User",
+  contact: "9999999999",
+  email: "test@example.com"
+},
+
+  handler: async function (response) {
+    const verifyRes = await fetch("/appointments/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+        doctorId
+      })
+    });
+
+    const result = await verifyRes.json();
+if (result.success) {
+   window.location.href = result.redirectUrl;
+} else {
+   alert("Payment failed ❌");
+}
+  }
+};
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Appointments</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="pc-shell">
+  <main class="container">
+
+  <% if (appointments.length === 0) { %>
+    <div class="pc-card" style="margin-top:14px;">
+      <div class="pc-card-body" style="color:var(--pc-muted); font-weight:600;">
+        No appointments booked yet.
+      </div>
+    </div>
+  <% } %>
+
+  <div class="doctor-grid" style="margin-top:14px;">
+
+    <% appointments.forEach(function(app) { %>
+
+      <div class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-doctor-card">
+            <img class="pc-avatar" src="<%= app.doctorId?.image?.url || '/images/doctor.png' %>" alt="Doctor">
+            <div>
+              <p class="pc-doctor-name">Dr. <%= app.doctorId.name %></p>
+              <p class="pc-doctor-meta"><%= app.doctorId.specialization %></p>
+
+              <div class="pc-pillrow">
+                <span class="pc-pill">📅 <%= new Date(app.date).toLocaleString() %></span>
+                <span class="pc-pill">🎟 Token <%= app.tokenNumber || "-" %></span>
+                <span class="pc-pill">Status: <%= app.status %></span>
+              </div>
+
+              <div class="pc-card-actions">
+                <a class="pc-btn pc-btn-primary" href="/doctors/video/<%= app._id %>" style="text-decoration:none;">Join video call</a>
+                <a class="pc-btn pc-btn-ghost" href="/doctors/<%= app.doctorId._id %>" style="text-decoration:none;">View doctor</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% }); %>  <!-- ✅ IMPORTANT -->
+
+  </div>
+
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+</body>
+</html>

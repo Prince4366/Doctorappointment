@@ -1,0 +1,78 @@
+<h2><%= clinic.clinicName %></h2>
+<p><%= clinic.address %></p>
+
+<div id="map" style="height:500px;"></div>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  <% if (clinic.location && clinic.location.lat && clinic.location.lng) { %>
+
+  const clinicLat = Number("<%= clinic.location.lat %>");
+  const clinicLng = Number("<%= clinic.location.lng %>");
+
+  // Create map
+  const map = L.map('map', { scrollWheelZoom: true })
+               .setView([clinicLat, clinicLng], 14);
+
+  // OSM tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Clinic marker
+  L.marker([clinicLat, clinicLng])
+    .addTo(map)
+    .bindPopup("<b>Doctor Clinic</b>")
+    .openPopup();
+
+  // Geolocation
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const patientLat = position.coords.latitude;
+        const patientLng = position.coords.longitude;
+
+        // Patient marker
+        L.marker([patientLat, patientLng])
+          .addTo(map)
+          .bindPopup("<b>You are here</b>")
+          .openPopup();
+
+        // Routing
+        const control = L.Routing.control({
+          waypoints: [
+            L.latLng(patientLat, patientLng),
+            L.latLng(clinicLat, clinicLng)
+          ],
+          lineOptions: { styles: [{ color: 'blue', weight: 5 }] },
+          addWaypoints: false,
+          draggableWaypoints: false,
+          fitSelectedRoutes: true,
+          show: false
+        }).addTo(map);
+
+      },
+      function () {
+        console.log("User denied location access.");
+      }
+    );
+  } else {
+    console.log("Geolocation not supported.");
+  }
+
+  <% } else { %>
+    document.getElementById("map").innerHTML =
+      "<p style='color:red;'>Clinic location not available.</p>";
+  <% } %>
+
+});
+</script>

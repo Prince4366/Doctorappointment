@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PrimeCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="pc-shell">
+
+  <main class="container">
+    <div class="pc-pagehead">
+      <div>
+        <h2>Find the right doctor</h2>
+        <div class="pc-subtitle">Trusted specialists, quick booking, modern care.</div>
+      </div>
+      <a class="pc-btn pc-btn-primary" href="/exploredoctors" style="text-decoration:none;">Explore doctors</a>
+    </div>
+
+    <div class="pc-card" style="margin-top:14px;">
+      <div class="pc-card-body">
+        <form action="/exploredoctors" method="GET">
+          <div class="pc-filters">
+            <select class="pc-input" name="rating">
+              <option value="">Rating</option>
+              <option value="3">3+ ⭐</option>
+              <option value="4">4+ ⭐</option>
+            </select>
+
+            <select class="pc-input" name="experience">
+              <option value="">Experience</option>
+              <option value="5">5+ years</option>
+              <option value="10">10+ years</option>
+            </select>
+
+            <select class="pc-input" name="state">
+              <option value="">State</option>
+              <% states.forEach(s => { %>
+                <option value="<%= s %>"><%= s %></option>
+              <% }) %>
+            </select>
+
+            <select class="pc-input" name="district">
+              <option value="">District</option>
+              <% districts.forEach(d => { %>
+                <option value="<%= d %>"><%= d %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="pc-filters-actions" style="margin-top:10px;">
+            <button class="pc-btn pc-btn-primary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <h3 style="margin:18px 0 10px;">Explore Services</h3>
+
+<div class="pc-grid pc-grid-3">
+
+  <!-- Explore Doctors -->
+  <a class="pc-card" href="/exploredoctors" style="text-decoration:none; overflow:hidden;">
+    <img class="pc-tip-media" style="height:170px;"
+         src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=1400&q=80"
+         alt="Explore Doctors">
+
+    <div class="pc-card-body">
+      <div style="font-weight:900;">Explore Doctors</div>
+      <div style="color:var(--pc-muted); font-weight:600; margin-top:6px;">
+        Find specialists near you
+      </div>
+    </div>
+  </a>
+
+  <!-- Video Consultation -->
+  <a class="pc-card" href="/doctors/video-consultation" style="text-decoration:none; overflow:hidden;">
+    <img class="pc-tip-media" style="height:170px;"
+         src="https://www.charakayurveda.com/wp-content/uploads/2023/04/video-consult.jpeg"
+         alt="Video Consultation">
+
+    <div class="pc-card-body">
+      <div style="font-weight:900;">Video Consultation</div>
+      <div style="color:var(--pc-muted); font-weight:600; margin-top:6px;">
+        Consult from home
+      </div>
+    </div>
+  </a>
+
+  <!-- Health Assistant -->
+  <a class="pc-card" href="/chat" style="text-decoration:none; overflow:hidden;">
+    <img class="pc-tip-media" style="height:170px;"
+         src="https://healthtechdigital.com/wp-content/uploads/2025/05/AI-powered-virtual-assistants-in-healthcare-benefits-and-real-world-applications.jpg"
+         alt="Health Assistant">
+
+    <div class="pc-card-body">
+      <div style="font-weight:900;">Ask Your Health Assistant</div>
+      <div style="color:var(--pc-muted); font-weight:600; margin-top:6px;">
+        Get instant help
+      </div>
+    </div>
+  </a>
+
+</div>
+
+    
+
+    <!-- Browse by specialization -->
+    <h3 style="margin:18px 0 10px;">Browse by Specialization</h3>
+    <div class="pc-grid pc-grid-3">
+      <%
+        const images = {
+          Cardiologist: "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1400&q=80",
+          Dentist: "https://images.unsplash.com/photo-1588776814546-bf7b5e47b5b2?auto=format&fit=crop&w=1400&q=80",
+          Orthopedist: "https://images.unsplash.com/photo-1581595219315-a187dd40c322?auto=format&fit=crop&w=1400&q=80",
+          Gynecologist: "https://images.unsplash.com/photo-1600959907703-125ba1374a12?auto=format&fit=crop&w=1400&q=80",
+          Dermatologist: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=1400&q=80"
+        };
+        const uniqueSpecs = [...new Set(doctors.map(d => d.specialization))].slice(0, 6);
+      %>
+
+      <% uniqueSpecs.forEach(spec => { %>
+        <a class="pc-card" href="/doctors/specialization/<%= spec %>" style="text-decoration:none; overflow:hidden;">
+          <img class="pc-tip-media" style="height:170px;" src="<%= images[spec] || images['Dentist'] %>" alt="<%= spec %>">
+          <div class="pc-card-body">
+            <div style="font-weight:900;"><%= spec %></div>
+            <div style="color:var(--pc-muted); font-weight:600; margin-top:6px;">View doctors</div>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+
+    <!-- Health tips preview -->
+    <div class="pc-pagehead" style="margin-top:22px;">
+      <div>
+        <h3 style="margin:0;">Latest Health Tips</h3>
+        <div class="pc-subtitle">Quick reads to stay healthier.</div>
+      </div>
+      <a class="pc-link" href="/healthtips">View all</a>
+    </div>
+
+    <div class="pc-grid pc-grid-3" style="margin-top:12px;">
+      <% (tips || []).forEach(t => { %>
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <div class="pc-tip-title"><%= t.title %></div>
+            <div class="pc-tip-summary"><%= t.summary %></div>
+            <div class="pc-card-actions">
+              <a class="pc-btn pc-btn-linklike" href="/healthtips" style="text-decoration:none;">Read more</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>PrimeCare</h3>
+          <p>Your trusted platform to find and book appointments with verified doctors easily and securely.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Features</h4>
+          <ul>
+            <li>Book Appointments Online</li>
+            <li>Verified Doctors</li>
+            <li>Location-based Search</li>
+            <li>Emergency Booking</li>
+            <li>Secure & Private</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a href="https://instagram.com" target="_blank">📷</a>
+            <a href="https://facebook.com" target="_blank">📘</a>
+            <a href="https://twitter.com" target="_blank">🐦</a>
+            <a href="https://youtube.com" target="_blank">▶️</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 PrimeCare. All rights reserved.</div>
+    </footer>
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Tips | PrimeCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="pc-shell">
+
+  <main class="container">
+    <div class="pc-pagehead">
+      <div>
+        <h2>Health Tips</h2>
+        <div class="pc-subtitle">Quick, reliable guidance from doctors on PrimeCare.</div>
+      </div>
+      <div style="color:var(--pc-muted); font-weight:700;"><%= posts?.length || 0 %> posts</div>
+    </div>
+
+    <% if (!posts || posts.length === 0) { %>
+      <div class="pc-card" style="margin-top:14px;">
+        <div class="pc-card-body" style="color:var(--pc-muted); font-weight:600;">
+          No health tips available.
+        </div>
+      </div>
+    <% } %>
+
+    <div class="pc-grid pc-grid-3" style="margin-top:14px;">
+      <% (posts || []).forEach(post => { %>
+        <article class="pc-card">
+          <img class="pc-tip-media" src="<%= post.image %>" alt="Health tip">
+          <div class="pc-card-body">
+            <h3 class="pc-tip-title"><%= post.title %></h3>
+            <p class="pc-tip-summary"><%= post.summary %></p>
+
+            <div class="pc-tip-meta">
+              <span class="pc-pill"><%= post.specialization %></span>
+              <span class="pc-pill">⭐ <%= post.rating %></span>
+              <span class="pc-pill"><%= post.experience %> yrs</span>
+            </div>
+
+            <div class="pc-card-actions">
+              <a class="pc-btn pc-btn-primary" href="/doctors/<%= post.doctorId %>" style="text-decoration:none;">View doctor</a>
+              <form action="/appointments/book/<%= post.doctorId %>" method="POST" style="margin:0;">
+                <button class="pc-btn pc-btn-ghost" type="submit">Book</button>
+              </form>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+</body>
+</html>
+

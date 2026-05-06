@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Explore Doctors</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="pc-shell">
+  <header class="pc-topbar">
+    <div class="pc-topbar-left">
+      <a class="pc-brand" href="/doctors">PrimeCare</a>
+      <span class="pc-badge">Find doctors</span>
+    </div>
+
+    <div class="pc-topbar-right">
+      <button class="pc-link" type="button" data-chat-open>Chat</button>
+      <a class="pc-link" href="/doctors">Back</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;">
+      <div>
+        <h2 style="margin:0;">Explore Doctors</h2>
+        <div style="color:var(--pc-muted); margin-top:6px;">Filter by specialization, location, and rating.</div>
+      </div>
+      <div style="color:var(--pc-muted); font-weight:600;"><%= doctors.length %> results</div>
+    </div>
+
+    <div class="pc-card" style="margin-top:14px;">
+      <div class="pc-card-body">
+        <form action="/exploredoctors" method="GET">
+          <div class="pc-filters">
+            <select class="pc-input" name="specialization">
+              <option value="">Specialization</option>
+              <% specializations.forEach(s => { %>
+                <option value="<%= s %>" <%= filters?.specialization === s ? "selected" : "" %>><%= s %></option>
+              <% }) %>
+            </select>
+
+            <select class="pc-input" name="state">
+              <option value="">State</option>
+              <% states.forEach(s => { %>
+                <option value="<%= s %>" <%= filters?.state === s ? "selected" : "" %>><%= s %></option>
+              <% }) %>
+            </select>
+
+            <select class="pc-input" name="district">
+              <option value="">District</option>
+              <% districts.forEach(d => { %>
+                <option value="<%= d %>" <%= filters?.district === d ? "selected" : "" %>><%= d %></option>
+              <% }) %>
+            </select>
+
+            <select class="pc-input" name="rating">
+              <option value="">Rating</option>
+              <option value="3" <%= filters?.rating === "3" ? "selected" : "" %>>3+ ⭐</option>
+              <option value="4" <%= filters?.rating === "4" ? "selected" : "" %>>4+ ⭐</option>
+            </select>
+          </div>
+
+          <div class="pc-filters-actions" style="margin-top:10px;">
+            <a class="pc-link" href="/exploredoctors">Clear</a>
+            <button class="pc-btn pc-btn-primary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="doctor-grid" style="margin-top:16px;">
+      <% doctors.forEach(doc => { %>
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <div class="pc-doctor-card">
+              <img class="pc-avatar" src="<%= doc.image?.url || '/images/doctor.png' %>" alt="Doctor">
+              <div>
+                <p class="pc-doctor-name">Dr. <%= doc.name %></p>
+                <p class="pc-doctor-meta"><%= doc.specialization %> • <%= doc.experience %> yrs</p>
+                <div class="pc-pillrow">
+                  <span class="pc-pill">⭐ <%= doc.rating || "N/A" %></span>
+                  <span class="pc-pill"><%= doc.district %>, <%= doc.state %></span>
+                  <% if (doc.videoConsultation) { %>
+                    <span class="pc-pill" style="border-color: rgba(22,163,74,0.25); background: rgba(22,163,74,0.10); color: #0f7a2f;">Video consult</span>
+                  <% } %>
+                </div>
+
+                <div class="pc-card-actions">
+                  <a class="pc-btn pc-btn-primary" href="/doctors/<%= doc._id %>" style="text-decoration:none; display:inline-flex; align-items:center;">View profile</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+
+<%- include("partials/chatbot") %>
+
+</body>
+</html>

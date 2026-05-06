@@ -1,0 +1,33 @@
+<!-- PrimeCare Chatbot Widget -->
+<button id="pcChatFab" class="pc-chat-fab" type="button" aria-label="Open chatbot">
+  <span class="pc-chat-fab-dot"></span>
+  <span class="pc-chat-fab-label">Chat</span>
+</button>
+
+<div id="pcChatPanel" class="pc-chat-panel" aria-hidden="true">
+  <div class="pc-chat-header">
+    <div>
+      <div class="pc-chat-title">PrimeCare Assistant</div>
+      <div class="pc-chat-subtitle">General health guidance • Not a diagnosis</div>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button id="pcChatClear" class="pc-btn pc-btn-ghost" type="button">Clear</button>
+      <button id="pcChatClose" class="pc-btn pc-btn-ghost" type="button">Close</button>
+    </div>
+  </div>
+
+  <div id="pcChatMessages" class="pc-chat-messages"></div>
+
+  <div id="pcChatTyping" class="pc-chat-typing" style="display:none;">
+    <span class="pc-typing-dot"></span><span class="pc-typing-dot"></span><span class="pc-typing-dot"></span>
+    <span class="pc-chat-typing-text">Typing…</span>
+  </div>
+
+  <form id="pcChatForm" class="pc-chat-inputbar">
+    <input id="pcChatInput" class="pc-input" placeholder="Type symptoms (e.g., fever, headache)..." autocomplete="off" />
+    <button class="pc-btn pc-btn-primary" type="submit">Send</button>
+  </form>
+</div>
+
+<script src="/js/chatbot.js"></script>
+

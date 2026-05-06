@@ -1,0 +1,81 @@
+<div class="container">
+  <!-- Doctor List -->
+  <div class="doctor-list">
+    <h2>Doctors</h2>
+
+    <% if (doctors.length === 0) { %>
+      <p>No doctors found in this district.</p>
+    <% } %>
+
+    <% doctors.forEach(doc => { %>
+      <div class="card">
+        <h3><%= doc.name %></h3>
+        <p><%= doc.degree %></p>
+        <p>⭐ <%= doc.rating || "N/A" %></p>
+        <a href="/doctors/<%= doc._id %>" class="profile-btn">View Profile</a>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Map -->
+  <div id="map"></div>
+</div>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+.container { display:flex; gap:20px; }
+.doctor-list { width:40%; overflow-y:auto; height:600px; }
+#map { width:60%; height:600px; border-radius:10px; }
+
+.card {
+  padding:15px;
+  margin-bottom:12px;
+  background:#f8f9fa;
+  border-radius:10px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+}
+
+.profile-btn {
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  background:#0d6efd;
+  color:white;
+  border-radius:5px;
+  text-decoration:none;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const doctors = <%- JSON.stringify(doctors) %>;
+  const map = L.map('map');
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  let markers = [];
+
+  doctors.forEach(doc => {
+    if (doc.clinicLocation && doc.clinicLocation.lat && doc.clinicLocation.lng) {
+      const marker = L.marker([doc.clinicLocation.lat, doc.clinicLocation.lng])
+        .addTo(map)
+        .bindPopup(`<b>${doc.name}</b><br>${doc.degree}`);
+      markers.push(marker);
+    }
+  });
+
+  if (markers.length > 0) {
+    const group = new L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.2));
+  } else {
+    map.setView([20.5937, 78.9629], 5); // fallback to India
+  }
+
+});
+</script>

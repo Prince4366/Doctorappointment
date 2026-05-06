@@ -1,0 +1,72 @@
+<h2 class="text-2xl font-semibold mb-6">Dashboard</h2>
+
+<% if (success) { %>
+  <div class="bg-green-100 text-green-700 p-2 rounded mb-4">
+    <%= success %>
+  </div>
+<% } %>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-4 gap-4 mb-6">
+  <div class="bg-white p-4 rounded-xl shadow">
+    <p class="text-gray-500">Total Appointments</p>
+    <h2 class="text-2xl font-bold"><%= total || 0 %></h2>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow">
+    <p class="text-gray-500">Confirmed</p>
+    <h2 class="text-2xl font-bold text-green-600"><%= confirmed || 0 %></h2>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow">
+    <p class="text-gray-500">Pending</p>
+    <h2 class="text-2xl font-bold text-yellow-500"><%= pending || 0 %></h2>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow">
+    <p class="text-gray-500">Cancelled</p>
+    <h2 class="text-2xl font-bold text-red-500"><%= cancelled || 0 %></h2>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="bg-white rounded-xl shadow p-4">
+  <h3 class="text-lg font-semibold mb-4">Appointments</h3>
+
+  <table class="w-full text-left">
+    <thead>
+      <tr class="text-gray-500">
+        <th class="p-2">Patient</th>
+        <th class="p-2">Doctor</th>
+        <th class="p-2">Date</th>
+        <th class="p-2">Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if (appointments && appointments.length > 0) { %>
+        <% appointments.forEach(a => { %>
+          <tr class="border-t hover:bg-gray-50">
+            <td class="p-2"><%= a.patientName %></td>
+            <td class="p-2"><%= a.doctorName %></td>
+            <td class="p-2"><%= a.date %></td>
+            <td class="p-2">
+              <span class="px-3 py-1 rounded-full text-white text-xs
+                <%= a.status === 'confirmed' ? 'bg-green-500' :
+                    a.status === 'pending' ? 'bg-yellow-500' :
+                    'bg-red-500' %>">
+                <%= a.status %>
+              </span>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="4" class="text-center p-4 text-gray-500">
+            No appointments found
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

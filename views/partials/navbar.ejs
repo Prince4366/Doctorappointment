@@ -1,0 +1,48 @@
+<header class="pc-topbar">
+  <div class="pc-topbar-left">
+    <a class="pc-brand" href="/doctors">𝙋𝙧𝙞𝙢𝙚𝘾𝙖𝙧𝙚</a>
+    <a href="/doctors/video-consultation"
+   class="pc-link text-gray-800 transition-colors duration-200 hover:text-gray-500">
+  Video consult
+</a>
+  </div>
+
+  <div class="pc-topbar-right">
+  <a href="/patient/dashboard" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+    Dashboard
+  </a>
+
+  <a href="/healthtips" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+    Health Tips
+  </a>
+
+  <a href="/appointments/my" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+    My Appointments
+  </a>
+
+  <% if (currentUser && currentUser.role === "admin") { %>
+    <a href="/admin/dashboard" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+      Admin
+    </a>
+
+    <a href="/admin/add-doctor" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+      Add Doctor
+    </a>
+  <% } %>
+
+  <% if (!currentUser) { %>
+    <a href="/auth/login" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+      Login
+    </a>
+
+    <a href="/auth/signup" class="pc-link !text-gray-800 font-medium transition duration-200 hover:text-gray-500">
+      Sign up
+    </a>
+  <% } else { %>
+    <a href="/auth/logout" class="pc-link !text-red-500 font-medium transition duration-200 hover:text-red-700">
+      Logout
+    </a>
+  <% } %>
+</div>
+  </div>
+</header>

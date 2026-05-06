@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctors</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="pc-shell">
+  
+
+  <main class="container">
+    <div class="pc-pagehead">
+      <div>
+        <h2><%= type %> Specialists</h2>
+        <div class="pc-subtitle"><%= doctors.length %> doctors available</div>
+      </div>
+    </div>
+
+<%
+  const grouped = {};
+  doctors.forEach(doc => {
+    if (!grouped[doc.specialization]) grouped[doc.specialization] = [];
+    grouped[doc.specialization].push(doc);
+  });
+
+  const banners = {
+    Dentist: "https://images.unsplash.com/photo-1588776814546-bf7b5e47b5b2",
+    Cardiologist: "https://images.unsplash.com/photo-1579154204601-01588f351e67",
+    Orthopedist: "https://images.unsplash.com/photo-1581595219315-a187dd40c322",
+    Gynecologist: "https://images.unsplash.com/photo-1600959907703-125ba1374a12",
+    Dermatologist: "https://images.unsplash.com/photo-1594824476967-48c8b964273f"
+  };
+%>
+
+    <div class="doctor-grid" style="margin-top:14px;">
+      <% doctors.forEach(doc => { %>
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <div class="pc-doctor-card">
+              <img class="pc-avatar" src="<%= doc.image?.url || '/images/doctor.png' %>" alt="Doctor">
+              <div>
+                <p class="pc-doctor-name">Dr. <%= doc.name %></p>
+                <p class="pc-doctor-meta"><%= doc.degree || '' %> <%= doc.degree ? '•' : '' %> <%= doc.experience %> yrs • <%= doc.specialization %></p>
+                <div class="pc-pillrow">
+                  <span class="pc-pill">⭐ <%= doc.rating || "N/A" %></span>
+                  <span class="pc-pill"><%= doc.district %>, <%= doc.state %></span>
+                </div>
+
+                <div class="pc-card-actions">
+                  <button class="pc-btn pc-btn-primary"
+                    onclick="payNow('<%= doc._id %>', <%= doc.consultationFee %>)">
+                    Book & Pay
+                  </button>
+                  <a class="pc-btn pc-btn-ghost" href="/doctors/<%= doc._id %>" style="text-decoration:none;">View profile</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+</main>
+</div>
+    
+</body>
+  
+</html>

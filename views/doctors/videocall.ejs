@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video Consultation | PrimeCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="pc-shell">
+
+  <main class="pc-call-layout">
+    <!-- Left: video -->
+    <section class="pc-call-left">
+      <div class="pc-video-stage">
+        <video id="pcRemoteVideo" class="pc-video pc-video-remote" playsinline autoplay></video>
+        <video id="pcLocalVideo" class="pc-video pc-video-local" playsinline muted autoplay></video>
+      </div>
+
+      <div class="pc-call-controls">
+        <div class="pc-call-status">
+          <span class="pc-status-dot"></span>
+          <span id="pcCallStatus">Preparing…</span>
+        </div>
+
+        <div class="pc-control-group">
+          <button id="pcMicBtn" class="pc-btn pc-btn-ghost" type="button" data-active="true">
+            <span class="pc-btn-label">Mute</span>
+          </button>
+          <button id="pcCamBtn" class="pc-btn pc-btn-ghost" type="button" data-active="true">
+            <span class="pc-btn-label">Camera off</span>
+          </button>
+          <button id="pcEndBtn" class="pc-btn pc-btn-danger" type="button">
+            <span class="pc-btn-label">End</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: chat + patient details -->
+    <aside class="pc-call-right">
+      <div class="pc-sidecard">
+        <div class="pc-sidecard-title">Patient details</div>
+        <div class="pc-kv">
+          <div class="pc-kv-row"><div class="pc-kv-k">Name</div><div class="pc-kv-v"><%= patient?.name || "-" %></div></div>
+          <div class="pc-kv-row"><div class="pc-kv-k">Age</div><div class="pc-kv-v"><%= patient?.age || "-" %></div></div>
+          <div class="pc-kv-row"><div class="pc-kv-k">Mobile</div><div class="pc-kv-v"><%= patient?.mobile || "-" %></div></div>
+          <div class="pc-kv-row"><div class="pc-kv-k">Token</div><div class="pc-kv-v"><%= appointment?.tokenNumber || "-" %></div></div>
+          <div class="pc-kv-row"><div class="pc-kv-k">Time</div><div class="pc-kv-v"><%= appointment?.estimatedTime || "-" %></div></div>
+        </div>
+      </div>
+
+      <div class="pc-sidecard pc-sidecard-chat">
+        <div class="pc-sidecard-title">Chat</div>
+        <div id="pcChatList" class="pc-chat-list"></div>
+        <form id="pcChatForm" class="pc-chat-form">
+          <input id="pcChatInput" class="pc-input" placeholder="Type a message…" autocomplete="off" />
+          <button class="pc-btn pc-btn-primary" type="submit">Send</button>
+        </form>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+<script>
+  window.__PRIMECARE_ROOM_ID__ = "<%= roomId %>";
+  window.__PRIMECARE_USER__ = { name: "<%= userName %>", role: "<%= role %>" };
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/videocall.js"></script>
+
+</body>
+</html>

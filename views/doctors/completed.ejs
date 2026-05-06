@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Completed Appointments</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <h1>✅ Completed Appointments</h1>
+</header>
+
+<div class="container">
+
+  <% if (completedAppointments.length === 0) { %>
+    <p>No completed appointments yet.</p>
+  <% } %>
+
+  <div class="doctor-grid">
+    <% completedAppointments.forEach(app => { %>
+      <div class="doctor-card">
+        <p><strong>Token:</strong> <%= app.tokenNumber %></p>
+        <p><strong>Patient:</strong> <%= app.patientId.name %></p>
+        <p><strong>Age:</strong> <%= app.patientId.age %></p>
+        <p><strong>Mobile:</strong> <%= app.patientId.mobile %></p>
+        <p><strong>Status:</strong> ✅ Completed</p>
+      </div>
+    <% }) %>
+  </div>
+
+  <br>
+  <a href="/doctor/dashboard">⬅ Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

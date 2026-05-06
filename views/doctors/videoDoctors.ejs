@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video Consultation | PrimeCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="pc-shell">
+
+  <main class="container">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;">
+      <div>
+        <h2 style="margin:0;">Video Consultation</h2>
+        <div style="color:var(--pc-muted); margin-top:6px;">
+          Pick a doctor available for video consultation. You can join the call from your booked appointment.
+        </div>
+      </div>
+      <div style="color:var(--pc-muted); font-weight:600;"><%= doctors.length %> doctors</div>
+    </div>
+
+    <div class="pc-card" style="margin-top:14px;">
+      <div class="pc-card-body">
+        <form action="/doctors/video-consultation" method="GET">
+          <div class="pc-filters">
+            <select class="pc-input" name="specialization">
+              <option value="">Specialization</option>
+              <% specializations.forEach(s => { %>
+                <option value="<%= s %>" <%= filters?.specialization === s ? "selected" : "" %>><%= s %></option>
+              <% }) %>
+            </select>
+
+            <select class="pc-input" name="disease">
+              <option value="">Concern</option>
+              <% diseases.forEach(d => { %>
+                <option value="<%= d %>" <%= filters?.disease === d ? "selected" : "" %>><%= d %></option>
+              <% }) %>
+            </select>
+
+            <select class="pc-input" name="rating">
+              <option value="">Rating</option>
+              <option value="3" <%= filters?.rating === "3" ? "selected" : "" %>>3+ ⭐</option>
+              <option value="4" <%= filters?.rating === "4" ? "selected" : "" %>>4+ ⭐</option>
+            </select>
+
+            <select class="pc-input" name="experience">
+              <option value="">Experience</option>
+              <option value="5" <%= filters?.experience === "5" ? "selected" : "" %>>5+ years</option>
+              <option value="10" <%= filters?.experience === "10" ? "selected" : "" %>>10+ years</option>
+            </select>
+          </div>
+
+          <div class="pc-filters-actions" style="margin-top:10px;">
+            <a class="pc-link" href="/doctors/video-consultation">Clear</a>
+            <button class="pc-btn pc-btn-primary" type="submit">Filter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="doctor-grid" style="margin-top:16px;">
+      <% doctors.forEach(doc => { %>
+        <div class="pc-card">
+          <div class="pc-card-body">
+            <div class="pc-doctor-card">
+              <img class="pc-avatar" src="<%= doc.image?.url || '/images/doctor.png' %>" alt="Doctor">
+              <div>
+                <p class="pc-doctor-name">Dr. <%= doc.name %></p>
+                <p class="pc-doctor-meta"><%= doc.specialization %> • <%= doc.experience %> yrs</p>
+                <div class="pc-pillrow">
+                  <span class="pc-pill">⭐ <%= doc.rating || "N/A" %></span>
+                  <span class="pc-pill"><%= doc.district %>, <%= doc.state %></span>
+                  <span class="pc-pill" style="border-color: rgba(22,163,74,0.25); background: rgba(22,163,74,0.10); color: #0f7a2f;">Video consult</span>
+                </div>
+                <div class="pc-card-actions">
+                  <a class="pc-btn pc-btn-primary" href="/doctors/<%= doc._id %>" style="text-decoration:none;">View profile</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+</body>
+</html>

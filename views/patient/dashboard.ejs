@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Dashboard | PrimeCare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="pc-dashboard-shell">
+  <aside class="pc-sidebar">
+    <a href="/doctors" class="pc-brand">PrimeCare</a>
+    <nav class="pc-sidebar-nav">
+      <a class="pc-side-link is-active" href="#overview">Dashboard</a>
+      <a class="pc-side-link" href="#appointments">Appointments</a>
+      <a class="pc-side-link" href="#records">Records</a>
+      <a class="pc-side-link" href="#prescriptions">Prescriptions</a>
+      <a class="pc-side-link" href="#ratings">Ratings</a>
+      <a class="pc-side-link" href="#tips">Health Tips</a>
+    </nav>
+  </aside>
+
+  <main class="pc-dashboard-main">
+    <header class="pc-dashboard-header" id="overview">
+      <div>
+        <h1 class="pc-dashboard-title">Patient Dashboard</h1>
+        <p class="pc-dashboard-sub">Track appointments, records, prescriptions, and ratings in one place.</p>
+      </div>
+      <div class="pc-dashboard-user">Hi, <%= user?.name || "Patient" %></div>
+    </header>
+
+    <section class="pc-grid pc-grid-3">
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Upcoming Appointment</div>
+          <div id="pcNextAppointment" class="pc-tip-summary">Loading…</div>
+          <div class="pc-card-actions">
+            <a id="pcJoinVideoBtn" class="pc-btn pc-btn-primary" href="/doctors/video-consultation" style="text-decoration:none;">Join video call</a>
+            <button class="pc-btn pc-btn-ghost" type="button" onclick="alert('Reschedule flow can be added here.')">Reschedule</button>
+            <button class="pc-btn pc-btn-ghost" type="button" onclick="alert('Cancel flow can be added here.')">Cancel</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Total Appointments</div>
+          <div id="pcTotalAppointments" style="font-size:30px; font-weight:800;">0</div>
+          <div class="pc-tip-summary">Across all consultation types</div>
+        </div>
+      </article>
+
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Total Reviews Given</div>
+          <div id="pcTotalReviews" style="font-size:30px; font-weight:800;">0</div>
+          <div class="pc-tip-summary">Your doctor ratings and reviews</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="pc-grid pc-grid-3" style="margin-top:16px;">
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Appointments Over Time</div>
+          <canvas id="appointmentsLineChart"></canvas>
+        </div>
+      </article>
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Monthly Visits</div>
+          <canvas id="visitsBarChart"></canvas>
+        </div>
+      </article>
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Consultation Types</div>
+          <canvas id="consultationPieChart"></canvas>
+        </div>
+      </article>
+    </section>
+
+    <section id="appointments" class="pc-grid pc-grid-3" style="margin-top:16px;">
+      <article class="pc-card" style="grid-column: span 2;">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Past Consultations</div>
+          <div id="pcPastConsultations" class="pc-grid" style="gap:10px;"></div>
+        </div>
+      </article>
+      <article id="prescriptions" class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Prescriptions</div>
+          <div id="pcPrescriptions" class="pc-grid" style="gap:10px;"></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="records" class="pc-grid pc-grid-3" style="margin-top:16px;">
+      <article class="pc-card" style="grid-column: span 2;">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Health Records</div>
+          <form id="pcRecordForm" class="pc-chat-form" enctype="multipart/form-data">
+            <input class="pc-input" type="file" name="record" required />
+            <button class="pc-btn pc-btn-primary" type="submit">Upload</button>
+          </form>
+          <div id="pcRecords" class="pc-grid" style="gap:10px; margin-top:10px;"></div>
+        </div>
+      </article>
+
+      <article id="ratings" class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Rate a Doctor</div>
+          <form id="pcRatingForm" class="pc-grid" style="gap:10px;">
+            <input id="pcRatingDoctorId" class="pc-input" placeholder="Doctor ID" required />
+            <input id="pcRatingValue" class="pc-input" type="number" min="1" max="5" placeholder="Rating (1-5)" required />
+            <textarea id="pcRatingComment" class="pc-input" placeholder="Review text" style="min-height:90px; resize:vertical;"></textarea>
+            <button class="pc-btn pc-btn-primary" type="submit">Submit Rating</button>
+          </form>
+          <div id="pcRatingsList" class="pc-grid" style="gap:10px; margin-top:10px;"></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="tips" style="margin-top:16px;">
+      <article class="pc-card">
+        <div class="pc-card-body">
+          <div class="pc-section-title">Daily Health Tips</div>
+          <div id="pcTips" class="pc-grid pc-grid-3"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+</div>
+
+<%- include("../partials/chatbot") %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/patient-dashboard.js"></script>
+</body>
+</html>
+

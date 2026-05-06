@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <h1>👨‍⚕️ Dr. <%= doctor.name %></h1>
+  <p><%= doctor.specialization %> | <%= doctor.city %></p>
+
+  <a href="/auth/logout" style="color:white; float:right;">
+    Logout
+  </a>
+</header>
+
+<a href="/doctor/completed" style="float:right; margin:10px;">
+  ✅ View Completed Appointments
+</a>
+
+<div class="container">
+
+  <!-- SUMMARY CARDS -->
+  <div class="doctor-grid">
+    <div class="doctor-card">
+      <h3>Total Appointments Today</h3>
+      <h2><%= appointments.length %></h2>
+    </div>
+
+    <div class="doctor-card">
+      <h3>Current Token</h3>
+      <h2>
+        <%= currentToken ? currentToken : "OPD Not Started" %>
+      </h2>
+    </div>
+  </div>
+
+  <!-- OPD CONTROLS -->
+  <div style="margin: 20px 0;">
+    <form action="/doctor/start" method="POST" style="display:inline;">
+      <button class="book-btn">▶ Start OPD (9:00 AM)</button>
+    </form>
+
+    <form action="/doctor/next" method="POST" style="display:inline; margin-left:10px;">
+      <button class="book-btn">⏭ Next Patient</button>
+    </form>
+  </div>
+
+  <h2 style="margin-top:30px;">📋 Today’s Appointment Queue</h2>
+
+  <% if (appointments.length === 0) { %>
+    <p>No appointments booked today.</p>
+  <% } %>
+
+  <div class="doctor-grid">
+    <% appointments.forEach(app => { %>
+      <div class="doctor-card">
+
+        <p><strong>🎟 Token:</strong> <%= app.tokenNumber %></p>
+        <p><strong>🧑‍🦱 Patient:</strong> <%= app.patientId.name %></p>
+
+        <p>
+          <strong>⏰ Estimated Time:</strong>
+          <span style="color:#2c7be5;">
+            <%= app.estimatedTime %>
+          </span>
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          <% if (app.status === "in-progress") { %>
+            <span style="color:green; font-weight:bold;">In Progress</span>
+          <% } else if (app.status === "completed") { %>
+            <span style="color:gray;">Completed</span>
+          <% } else { %>
+            <span style="color:orange;">Waiting</span>
+          <% } %>
+        </p>
+
+      </div>
+    <% }) %>
+  </div>
+
+</div>
+
+</body>
+</html>
