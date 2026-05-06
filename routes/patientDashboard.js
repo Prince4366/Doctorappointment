@@ -5,7 +5,7 @@ const multer = require("multer");
 
 const Appointment = require("../models/Appointment");
 const Review = require("../models/Review");
-const HealthTip = require("../models/HealthTip");
+const HealthTip = require("../models/HealthtTip");
 const Prescription = require("../models/Prescription");
 const HealthRecord = require("../models/HealthRecord");
 

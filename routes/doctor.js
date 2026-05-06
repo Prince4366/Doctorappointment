@@ -5,7 +5,7 @@ const Review = require("../models/Review");
 const mongoose = require("mongoose");
 
 
-const HealthTip = require("../models/HealthTip");
+const HealthTip = require("../models/HealthtTip");
 const Question = require("../models/Question");
 const Appointment = require("../models/Appointment");
 
@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
   const districts = await Doctor.distinct("district");
 
   // Show latest health tips preview on the home page
-  const HealthTip = require("../models/HealthTip");
+  const HealthTip = require("../models/HealthtTip");
   const tips = await HealthTip.find().sort({ createdAt: -1 }).limit(6);
 
   res.render("doctors/index", { doctors, states, districts, tips });
