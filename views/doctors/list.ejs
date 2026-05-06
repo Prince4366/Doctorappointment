@@ -34,11 +34,12 @@
     Cardiologist: "https://images.unsplash.com/photo-1579154204601-01588f351e67",
     Orthopedist: "https://images.unsplash.com/photo-1581595219315-a187dd40c322",
     Gynecologist: "https://images.unsplash.com/photo-1600959907703-125ba1374a12",
-    Dermatologist: "https://images.unsplash.com/photo-1594824476967-48c8b964273f"
+    Dermatologist: "https://images.unsplash.com/photo-1594824476967-48c8b964273f",
+    Neurologist: "https://www.supremehospital.in/wp-content/uploads/2022/03/neurosurgeon-neurologist-600x380-1.jpg"
   };
 %>
 
-    <div class="doctor-grid" style="margin-top:14px;">
+     <div class="doctor-grid" style="margin-top:16px;">
       <% doctors.forEach(doc => { %>
         <div class="pc-card">
           <div class="pc-card-body">
@@ -46,18 +47,14 @@
               <img class="pc-avatar" src="<%= doc.image?.url || '/images/doctor.png' %>" alt="Doctor">
               <div>
                 <p class="pc-doctor-name">Dr. <%= doc.name %></p>
-                <p class="pc-doctor-meta"><%= doc.degree || '' %> <%= doc.degree ? '•' : '' %> <%= doc.experience %> yrs • <%= doc.specialization %></p>
+                <p class="pc-doctor-meta"><%= doc.specialization %> • <%= doc.experience %> yrs</p>
                 <div class="pc-pillrow">
                   <span class="pc-pill">⭐ <%= doc.rating || "N/A" %></span>
                   <span class="pc-pill"><%= doc.district %>, <%= doc.state %></span>
+                  <span class="pc-pill" style="border-color: rgba(22,163,74,0.25); background: rgba(22,163,74,0.10); color: #0f7a2f;">Video consult</span>
                 </div>
-
                 <div class="pc-card-actions">
-                  <button class="pc-btn pc-btn-primary"
-                    onclick="payNow('<%= doc._id %>', <%= doc.consultationFee %>)">
-                    Book & Pay
-                  </button>
-                  <a class="pc-btn pc-btn-ghost" href="/doctors/<%= doc._id %>" style="text-decoration:none;">View profile</a>
+                  <a class="pc-btn pc-btn-primary" href="/doctors/<%= doc._id %>" style="text-decoration:none;">View profile</a>
                 </div>
               </div>
             </div>
